@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  # Main application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - MOCK_API_URL=http://mock-api:8001
+    depends_on:
+      - mock-api
+    networks:
+      - automation-network
+
+  # Mock enrichment API
+  mock-api:
+    build:
+      context: ./mock-api
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8001"
+    networks:
+      - automation-network
+
+networks:
+  automation-network:
+    driver: bridge
