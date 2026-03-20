@@ -8,11 +8,22 @@ Candidates can use this for testing their automation pipeline.
 """
 
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from typing import Optional, Dict, Any
 from datetime import datetime, timezone
 import random
 import asyncio
+
+class Lead(BaseModel):
+    BranchID: str     # define as an int instead of str , in order to match only digits rule
+    WorkerCode: str
+    AskedCar: str
+    FirstName: str
+    LastName: str
+    # Email: EmailStr
+    Phone: str
+    FromWebSite: str
+    Area: str
 
 app = FastAPI(
     title="Car Dealer Mock API",
@@ -248,7 +259,14 @@ async def health_check():
         "service": "car-dealer-mock-api",
         "timestamp": datetime.now(timezone.utc).isoformat()
     }
+@app.post("/api/leads")
+async def create_lead(lead: Lead):
+    return {"status": "success", "lead": lead}
 
+
+@app.get("/api/leads")
+async def get_leads():
+    return {"message": "GET endpoint working"}
 
 @app.post("/api/enrich", response_model=LeadEnrichmentResponse)
 async def enrich_lead(request: LeadEnrichmentRequest):

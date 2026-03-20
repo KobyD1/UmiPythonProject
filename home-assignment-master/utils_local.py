@@ -12,20 +12,21 @@ class UtilsLocal:
         try:
 
             data_frame = pd.read_excel(self.path+"cars_models_parsed.xlsx")
-            if car_model not in data_frame["Model_ID"].values:
-                print("Car nodel does not exist")
-                self.is_car_exist=False
-                row = data_frame[data_frame["Model_ID"] == "00000_000"]
-                return dict(row.iloc[0])
 
-            else:
-                row = data_frame[data_frame["Model_ID"] == car_model]
-                return dict(row.iloc[0])
+
+            row = data_frame[data_frame["Model_ID"] == car_model]
+            return dict(row.iloc[0])
 
 
         except Exception as e:
             print("Something went wrong at car model set it at default values ")
-            default_car =  {'Availability': 'In Stock', 'Category': 'SUV', 'Model_ID': '90962_101', 'model_name': 'U-Tour', 'price_range': '165,000 - 185,000 ILS'}
+            default_car =  {
+                'Availability': 'In Stock',
+                'Category': 'SUV',
+                'Model_ID': '90962_101',
+                'model_name': 'U-Tour',
+                'price_range': '165,000 - 185,000 ILS'
+            }
             return default_car
 
 
@@ -33,17 +34,16 @@ class UtilsLocal:
     def analyze_score_by_car(self,car_model):
             score=0
             car_as_dict = self.get_car_info_by_car_model(car_model)
-            if self.is_car_exist:
 
-                if ((car_as_dict["Availability"])=="In Stock"):
-                    score += 10
+            if ((car_as_dict["Availability"])=="In Stock"):
+                score += 10
 
-                if (car_as_dict["Category"])=="Electric":
-                    score += 15
+            if (car_as_dict["Category"])=="Electric":
+                score += 15
 
-                if (car_as_dict["Category"]) == "Luxury":
-                    score += 20
-                print (f"Score after car model calculate is {score}")
+            if (car_as_dict["Category"]) == "Luxury":
+                score += 20
+            print (f"Score after car model calculate is {score}")
 
             return score
 
@@ -57,15 +57,29 @@ class UtilsLocal:
         return leads[id]
 
     def get_branch_info_by_lead(self, lead):
-        if not os.path.exists(self.path + "branch_config.xlsx"):
-            self.is_branch_file_exist = False
-        branch_id = lead["BranchID"]
-        data_frame = pd.read_excel(self.path + "branch_config.xlsx")
-        if branch_id not in data_frame["BranchID"].values:
-            print("Branch ID does not exist changed to 400")
-            branch_id=400
-        branch = data_frame[data_frame["BranchID"] == int(branch_id)]
-        return dict(branch.iloc[0])
+        try:
+            branch_id = lead["BranchID"]
+            data_frame = pd.read_excel(self.path + "branch_config.xlsx")
+            if branch_id not in data_frame["BranchID"].values:
+                print("Branch ID does not exist changed to 400")
+                branch_id=400
+            branch = data_frame[data_frame["BranchID"] == int(branch_id)]
+            return dict(branch.iloc[0])
+        except Exception as e:
+            print("Something went wrong at getting branch set it at default values ")
+            default_branch = {'Address': 'Menachem Begin Rd 132, Tel Aviv',
+                              'BranchID': 400,
+                              'City': 'Tel Aviv',
+                              'Email': 'telaviv@dealership.co.il',
+                              'Languages': 'Hebrew, English, Russian',
+                              'Manager': 'David Cohen',
+                              'Name': 'Tel Aviv Showroom',
+                              'Phone': '03-5551234',
+                              'Region': 'Center',
+                              'Specialties': 'Luxury, Electric, SUV',
+                              'Working Hours': 'Sun-Thu 9:00-19:00, Fri 9:00-14:00'
+                              }
+            return default_branch
 
     def analyze_assigned_by_score(self, score, lead):
         assigned = {}

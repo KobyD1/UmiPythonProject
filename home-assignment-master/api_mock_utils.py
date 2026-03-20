@@ -33,7 +33,7 @@ class apiMockUtils():
                 time.sleep(delay)
                 delay *= 2
 
-    def score_calc_by_enrichment(self,response_body):
+    def analyze_score_by_enrichment(self,response_body):
         score = 0
         lead_priority = response_body["data"]["lead_priority"]
         email_trust = response_body["data"]["email_insights"]["trust_level"]
