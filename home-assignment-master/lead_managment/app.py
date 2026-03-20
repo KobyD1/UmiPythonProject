@@ -68,3 +68,10 @@ async def create_lead(lead: Lead):
 @app.get("/api/leads")
 async def get_leads():
     return {"message": "GET endpoint working"}
+
+
+
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000, log_level="info")
