@@ -61,7 +61,6 @@ class UtilsLocal:
             branch_id = lead["BranchID"]
             data_frame = pd.read_excel(self.path + "branch_config.xlsx")
             if branch_id not in data_frame["BranchID"].values:
-                print("Branch ID does not exist changed to 400")
                 branch_id=400
             branch = data_frame[data_frame["BranchID"] == int(branch_id)]
             return dict(branch.iloc[0])

@@ -1,7 +1,10 @@
 import requests
+import subprocess
 import time
-import pandas as pd
-import utils_local
+import sys
+
+
+
 
 
 class UtilsAppApi():
@@ -51,6 +54,29 @@ class UtilsAppApi():
 
         print (f"Score as a result of Enrichment is {score}")
         return score
+
+    def kill_process_on_port(self,port=8001):
+        try:
+            result = subprocess.check_output(f"netstat -ano | findstr :{port}", shell=True).decode()
+            lines = result.strip().split('\n')
+            for line in lines:
+                if 'LISTENING' in line:
+                    pid = line.strip().split()[-1]
+                    print(f"Cleaning up: Killing process {pid} on port {port}")
+                    subprocess.run(f"taskkill /F /PID {pid}", shell=True, stdout=subprocess.DEVNULL,
+                                   stderr=subprocess.DEVNULL)
+        except subprocess.CalledProcessError:
+            print(f" Port {port} is already free")
+
+
+    def start_app(self):
+        print("Starting APP Server")
+        server_process = subprocess.Popen([
+            sys.executable, "-m", "uvicorn",
+            "mock-api.main:app",
+            "--host", "0.0.0.0",
+            "--port", "8001"
+        ])
 
 
 
