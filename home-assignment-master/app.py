@@ -6,7 +6,7 @@ app = FastAPI()
 
 
 class Lead(BaseModel):
-    BranchID: int     # define as an int instead of str , in order to match only digits rule
+    BranchID: int  # define as an int instead of str , in order to match only digits rule
     WorkerCode: str
     AskedCar: str
     FirstName: str
@@ -15,9 +15,6 @@ class Lead(BaseModel):
     Phone: str
     FromWebSite: str
     Area: str
-
-
-
 
     # Email verification is essential for automation workflows.
     # Invalid  emails cause:
@@ -38,7 +35,6 @@ class Lead(BaseModel):
             return email
         return email
 
-
     @field_validator("Phone")
     def validate_phone(cls, phone):
         if phone is None:
@@ -51,7 +47,6 @@ class Lead(BaseModel):
 
         return phone
 
-
     @model_validator(mode="after")
     def validate_required(self):
         if not self.Email and not self.Phone:
@@ -59,17 +54,12 @@ class Lead(BaseModel):
         return self
 
 
-
 @app.post("/api/leads")
 async def create_lead(lead: Lead):
     return {"status": "success", "lead": lead}
 
 
-
-
-
-
-
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(app, host="0.0.0.0", port=8001, log_level="info")

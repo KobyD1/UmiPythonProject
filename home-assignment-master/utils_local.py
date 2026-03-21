@@ -1,18 +1,17 @@
-
 import pandas as pd
 import json
 import globals
+
 
 class UtilsLocal:
     def __init__(self, path=globals.PATH_DATA):
         self.path = path
 
-    def get_car_info_by_car_model(self,car_model):
+    def get_car_info_by_car_model(self, car_model):
 
         try:
 
-            data_frame = pd.read_excel(self.path+"cars_models_parsed.xlsx")
-
+            data_frame = pd.read_excel(self.path + "cars_models_parsed.xlsx")
 
             row = data_frame[data_frame["Model_ID"] == car_model]
             return dict(row.iloc[0])
@@ -20,7 +19,7 @@ class UtilsLocal:
 
         except Exception as e:
             print("Something went wrong at car model set it at default values ")
-            default_car =  {
+            default_car = {
                 'Availability': 'In Stock',
                 'Category': 'SUV',
                 'Model_ID': '90962_101',
@@ -29,26 +28,24 @@ class UtilsLocal:
             }
             return default_car
 
+    def analyze_score_by_car(self, car_model):
+        score = 0
+        car_as_dict = self.get_car_info_by_car_model(car_model)
 
+        if ((car_as_dict["Availability"]) == "In Stock"):
+            score += 10
 
-    def analyze_score_by_car(self,car_model):
-            score=0
-            car_as_dict = self.get_car_info_by_car_model(car_model)
+        if (car_as_dict["Category"]) == "Electric":
+            score += 15
 
-            if ((car_as_dict["Availability"])=="In Stock"):
-                score += 10
+        if (car_as_dict["Category"]) == "Luxury":
+            score += 20
+        print(f"Score after car model calculate is {score}")
 
-            if (car_as_dict["Category"])=="Electric":
-                score += 15
+        return score
 
-            if (car_as_dict["Category"]) == "Luxury":
-                score += 20
-            print (f"Score after car model calculate is {score}")
-
-            return score
-
-    def get_lead_from_json(self,id ,file="sample_leads.json"):
-        with open(self.path+file, "r", encoding="utf-8") as f:
+    def get_lead_from_json(self, id, file="sample_leads.json"):
+        with open(self.path + file, "r", encoding="utf-8") as f:
             data = json.load(f)
 
         leads = data["leads"]
@@ -61,7 +58,7 @@ class UtilsLocal:
             branch_id = lead["BranchID"]
             data_frame = pd.read_excel(self.path + "branch_config.xlsx")
             if branch_id not in data_frame["BranchID"].values:
-                branch_id=400
+                branch_id = 400
             branch = data_frame[data_frame["BranchID"] == int(branch_id)]
             return dict(branch.iloc[0])
         except Exception as e:
@@ -101,27 +98,26 @@ class UtilsLocal:
 
         return assigned
 
-
-    def set_final_enriched_lead_object(self,lead,enrichment_data,assigned,score):
+    def set_final_enriched_lead_object(self, lead, enrichment_data, assigned, score):
 
         branch = self.get_branch_info_by_lead(lead)
         car_row = self.get_car_info_by_car_model(lead["AskedCar"])
         branch_info = {}
         car_info = {}
-# define final message /branch part
+        # define final message /branch part
         branch_info["branch_id"] = str(branch["BranchID"])
         branch_info["name"] = branch["Name"]
         branch_info["Manager"] = branch["Manager"]
         branch_info["region"] = branch["Region"]
 
-# define final message /car part
+        # define final message /car part
 
         car_info["model_id"] = car_row["Model_ID"]
         car_info["model_name"] = car_row["model_name"]
         car_info["category"] = car_row["Category"]
         car_info["price_range"] = car_row["price_range"]
 
-# define final message /enrichment part
+        # define final message /enrichment part
         enrichment = {}
         geographic = {}
         email_insights = {}
@@ -137,12 +133,12 @@ class UtilsLocal:
         enrichment["email_insights"] = email_insights
         enrichment["phone_insights"] = phone_insights
 
-# integration of all parts
+        # integration of all parts
         final_enriched_lead = {
             "original_lead": {},
             "branch_info": branch_info,
             "car_info": car_info,
-            "enrichment":enrichment,
+            "enrichment": enrichment,
             "score": score,
             "priority": assigned["priority"],
             "assigned_to": assigned["assigned_to"],
@@ -152,4 +148,3 @@ class UtilsLocal:
         print("********** final_enriched_lead **********")
         print(final_enriched_lead)
         print("*****************************************")
-

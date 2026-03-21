@@ -1,11 +1,9 @@
-
 import utils_local
 import utils_app_api
 import globals
 
 
 def run_pipeline():
-
     utils = utils_local.UtilsLocal()
     app_api = utils_app_api.UtilsAppApi()
     app_api.kill_process_on_port(globals.APP_PORT)
@@ -22,6 +20,7 @@ def run_pipeline():
     print("**** Pipeline completed successfully ****")
 
     app_api.kill_process_on_port(globals.APP_PORT)
+
 
 if __name__ == "__main__":
     run_pipeline()

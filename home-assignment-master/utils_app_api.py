@@ -5,20 +5,17 @@ import sys
 import globals
 
 
-
-
-
 class UtilsAppApi():
 
-    def __init__(self, url_base=globals.APP_BASE_URL ,retries=3):
+    def __init__(self, url_base=globals.APP_BASE_URL, retries=3):
         self.url_base = url_base
-        self.retries=retries
+        self.retries = retries
 
-    def call_enrichment_api(self,email, phone, asked_car=""):
+    def call_enrichment_api(self, email, phone, asked_car=""):
         payload = {"email": email, "phone": phone, "asked_car": asked_car}
 
-        print (f"Calling enrichment API, payload = {payload}")
-        url = self.url_base+globals.ENRICH_URL
+        print(f"Calling enrichment API, payload = {payload}")
+        url = self.url_base + globals.ENRICH_URL
         delay = 1
 
         for attempt in range(1, self.retries + 1):
@@ -37,7 +34,7 @@ class UtilsAppApi():
                 time.sleep(delay)
                 delay *= 2
 
-    def analyze_score_by_enrichment(self,response_body):
+    def analyze_score_by_enrichment(self, response_body):
         score = 0
         lead_priority = response_body["data"]["lead_priority"]
         email_trust = response_body["data"]["email_insights"]["trust_level"]
@@ -53,10 +50,10 @@ class UtilsAppApi():
         if lead_priority == "Medium":
             score += 20
 
-        print (f"Score as a result of Enrichment is {score}")
+        print(f"Score as a result of Enrichment is {score}")
         return score
 
-    def kill_process_on_port(self,port=globals.APP_PORT):
+    def kill_process_on_port(self, port=globals.APP_PORT):
         try:
             result = subprocess.check_output(f"netstat -ano | findstr :{port}", shell=True).decode()
             lines = result.strip().split('\n')
@@ -69,7 +66,6 @@ class UtilsAppApi():
         except subprocess.CalledProcessError:
             print(f" Port {port} is  free")
 
-
     def start_app(self):
         print("Starting APP Server")
         server_process = subprocess.Popen([
@@ -79,13 +75,3 @@ class UtilsAppApi():
             "--port", "8001"
         ])
         time.sleep(5)  # adding delay in order to get stable results in case of slow response by app. server
-
-
-
-
-
-
-
-
-
-
