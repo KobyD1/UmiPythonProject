@@ -7,6 +7,21 @@
 * &#x20;Python installation 
 * all modules as define at requirement.txt file or by running in root folder  **PIP install -r ./requirments.text** 
 
+3\. in case of docker : 
+
+* docker should be installed 
+* running commands :
+
+&#x20;        run : docker-compose up --build .
+
+&#x20;        build pipeline only : docker build -t pipeline .
+
+&#x20;        run pipeline only :docker run pipeline
+
+
+
+
+
 ##### *API*
 
 General 
@@ -85,17 +100,30 @@ utils class for any part (API and general)
 
 globals - for globals parameters
 
-2\. default values in case of coding error at some critical methods  
+2\. files not found - will send default values 
 
-3\. files not found - will send default values 
+3\. the pipeline run only over the first lead - can be set by globals (LEAD\_ID) , or go over all leads  by adding loop 
 
-4\. the pipeline run only over the first lead - can be set by globals (LEAD\_ID) , or go over all leads  by adding loop 
+4\. cars data into cars model file  converted  to EXCEL file with import details only  - more easy to handle 
 
-5\. the pipe line start and stop with killing port 8001 - in order to get stable result  
+5\. Postman collection  for testing is in : data/umi.postman\_collection.json
 
-6\. cars data into cars model file  converted  to EXCEL file with import details only  - more easy to handle 
+6\. Stability :
+the pipe line start and stop with killing port 8001 
 
-7\. 
+retry with delay for the API request 
+
+7\. Maintenance: 
+
+&#x20;default values in case of coding error at some critical methods
+
+logs per each method with information 
+
+comments adding 
+
+
+
+
 
 
 
