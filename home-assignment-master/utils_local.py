@@ -66,7 +66,7 @@ class UtilsLocal:
             branch = data_frame[data_frame["BranchID"] == int(branch_id)]
             return dict(branch.iloc[0])
         except Exception as e:
-            print("Something went wrong at getting branch set it at default values ")
+            print("Something went wrong at getting branch set it at default values branch ID=400")
             default_branch = {'Address': 'Menachem Begin Rd 132, Tel Aviv',
                               'BranchID': 400,
                               'City': 'Tel Aviv',

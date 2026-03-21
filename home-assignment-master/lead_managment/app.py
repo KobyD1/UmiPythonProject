@@ -65,9 +65,7 @@ async def create_lead(lead: Lead):
     return {"status": "success", "lead": lead}
 
 
-@app.get("/api/leads")
-async def get_leads():
-    return {"message": "GET endpoint working"}
+
 
 
 

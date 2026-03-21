@@ -4,7 +4,7 @@ import pandas as pd
 import utils_local
 
 
-class apiMockUtils():
+class UtilsAppApi():
 
     def __init__(self, url_base="http://127.0.0.1:8001/" ,retries=3):
         self.url_base = url_base
