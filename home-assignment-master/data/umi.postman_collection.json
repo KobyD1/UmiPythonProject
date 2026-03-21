@@ -1,0 +1,43 @@
+{
+  "info": {
+    "_postman_id": "5fd92e2e-a850-40cd-8843-99e32a38a152",
+    "name": "umi",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "21880758",
+    "_collection_link": "https://go.postman.co/collection/21880758-5fd92e2e-a850-40cd-8843-99e32a38a152?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "enrich",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \r\n    \"Email\": \"danny.cohen@gmail.com\",\r\n    \"Phone\": \"0542100319\",\r\n    \"asked_car\":\"90962_101\",\r\n    \"Area\": \"1\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8001/api/enrich",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8001",
+          "path": [
+            "api",
+            "enrich"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

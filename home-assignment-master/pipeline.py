@@ -10,7 +10,7 @@ def run_pipeline():
     app_api.start_app()
 
     print("**** Executing Pipeline Logic ****")
-    lead = utils.get_lead_from_json(0)
+    lead = utils.get_lead_from_json(globals.LEAD_ID)
     enrichment = app_api.call_enrichment_api(lead.get("Email"), lead.get("Phone"), lead.get("Area"))
     enrichment_score = app_api.analyze_score_by_enrichment(enrichment)
     car_score = utils.analyze_score_by_car(lead["AskedCar"])
