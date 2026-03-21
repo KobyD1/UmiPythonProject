@@ -2,6 +2,7 @@ import requests
 import subprocess
 import time
 import sys
+import globals
 
 
 
@@ -9,7 +10,7 @@ import sys
 
 class UtilsAppApi():
 
-    def __init__(self, url_base="http://127.0.0.1:8001/" ,retries=3):
+    def __init__(self, url_base=globals.APP_BASE_URL ,retries=3):
         self.url_base = url_base
         self.retries=retries
 
@@ -17,7 +18,7 @@ class UtilsAppApi():
         payload = {"email": email, "phone": phone, "asked_car": asked_car}
 
         print (f"Calling enrichment API, payload = {payload}")
-        url = self.url_base+"api/enrich"
+        url = self.url_base+globals.ENRICH_URL
         delay = 1
 
         for attempt in range(1, self.retries + 1):
@@ -55,7 +56,7 @@ class UtilsAppApi():
         print (f"Score as a result of Enrichment is {score}")
         return score
 
-    def kill_process_on_port(self,port=8001):
+    def kill_process_on_port(self,port=globals.APP_PORT):
         try:
             result = subprocess.check_output(f"netstat -ano | findstr :{port}", shell=True).decode()
             lines = result.strip().split('\n')
@@ -66,7 +67,7 @@ class UtilsAppApi():
                     subprocess.run(f"taskkill /F /PID {pid}", shell=True, stdout=subprocess.DEVNULL,
                                    stderr=subprocess.DEVNULL)
         except subprocess.CalledProcessError:
-            print(f" Port {port} is already free")
+            print(f" Port {port} is  free")
 
 
     def start_app(self):
@@ -77,6 +78,8 @@ class UtilsAppApi():
             "--host", "0.0.0.0",
             "--port", "8001"
         ])
+        time.sleep(5)  # adding delay in order to get stable results in case of slow response by app. server
+
 
 
 

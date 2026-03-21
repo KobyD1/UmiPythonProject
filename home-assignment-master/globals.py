@@ -1,0 +1,6 @@
+APP_BASE_URL = "http://127.0.0.1:8001/"
+ENRICH_URL= "api/enrich"
+APP_PORT = 8001
+PATH_DATA = "./data/"
+HOT_SCORE_LIMIT = 69
+WARM_SCORE_LIMIT = 40

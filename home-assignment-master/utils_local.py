@@ -1,10 +1,10 @@
-import os
 
 import pandas as pd
 import json
+import globals
 
 class UtilsLocal:
-    def __init__(self, path="./data/" ):
+    def __init__(self, path=globals.PATH_DATA):
         self.path = path
 
     def get_car_info_by_car_model(self,car_model):
@@ -84,12 +84,12 @@ class UtilsLocal:
         assigned = {}
 
         if score > 100: score = 100
-        if score > 69:
+        if score > globals.HOT_SCORE_LIMIT:
             print("Hot lead found - assigned to branch manager")
             assigned["priority"] = "Hot"
             assigned["assigned_to"] = self.get_branch_info_by_lead(lead)["Manager"]
 
-        elif score > 40:
+        elif score > globals.WARM_SCORE_LIMIT:
             print("Warm lead found - assigned to worker")
             assigned["assigned_to"] = lead["WorkerCode"]
             assigned["priority"] = "Warm"
@@ -100,8 +100,6 @@ class UtilsLocal:
             assigned["priority"] = "Cold"
 
         return assigned
-
-
 
 
     def set_final_enriched_lead_object(self,lead,enrichment_data,assigned,score):
