@@ -7,7 +7,7 @@ import globals
 
 class UtilsAppApi():
 
-    def __init__(self, url_base=globals.APP_BASE_URL, retries=3):
+    def __init__(self, url_base=globals.ENRICH_BASE_URL, retries=3):
         self.url_base = url_base
         self.retries = retries
 
