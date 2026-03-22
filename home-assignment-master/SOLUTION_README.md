@@ -2,17 +2,17 @@
 
 ### Instruction
 
-&#x20;   1. provide test data with relevant information located as define at globals.py file (default value is /data)
+&#x20;   1. provide test data with relevant information- it can located by user define  at globals.py file (default value is /data)
 
-&#x20;   2. in case of port is in use run the following command by PowerShell 
+&#x20;   2. in case of port is in use run the following command by PowerShell in order to release the port 
 
 &#x20;       Stop-Process -Id (Get-NetTCPConnection -LocalPort 8001).OwningProcess -Force
 
-&#x20;   3. in case of local running without Docker : 
+&#x20;   3. in case of local running without Docker :
 
-&#x20;       Install Python 
+&#x20;       Install Python
 
-&#x20;      install all modules as define at requirement.txt file or by running in root folder PIP install -r ./requirements.txt
+&#x20;      install all modules as define at requirement.txt file or by running in root folder pip install -r ./requirements.txt
 
 &#x20;   4. in case of docker :
 
@@ -20,11 +20,11 @@
 
 &#x20;        docker  commands
 
-&#x20;        run : docker-compose up --build .
+&#x20;        run all solution  : docker-compose up --build .
 
 &#x20;        build pipeline only : docker build -t pipeline .
 
-&#x20;        run pipeline only :docker run pipeline
+&#x20;        run pipeline only : docker run pipeline
 
 
 
@@ -32,9 +32,9 @@
 
 ### API
 
-Mock
+Enrich by Mock 
 
-&#x20;Method :Post
+&#x20;Method : Post
 
 URL  : http://mock-api:8001/api/enrich
 
@@ -104,13 +104,19 @@ Body (according the following example) :
 
 pipline - the main part of the pipeline
 
-utils class for any part (API and general)
+utils class for any part (API and local)
 
-globals - for globals parameters
+globals  - for globals parameters
+
+app - to run the application only 
 
 
 
-2\. files not found - will send default values
+2\. case  files not found , missing values ....- will set to  default values 
+
+2.1  it order to get more clean code("keep it simple" principle ) -
+
+case of missing parameters will set to default values and not NONE as define at assignment requirement
 
 
 
@@ -124,7 +130,7 @@ globals - for globals parameters
 
 5\. Stability :
 
-the pipe line start and stop with killing port 8001
+the pipe line start and stop with killing port 8001 for any case the port is in use before the pipeline 
 
 retry with delay for the API request
 
@@ -144,11 +150,13 @@ comments adding
 
 
 
-### General 
+8\. some fixed at Dockerfile in order the Docker will success to run (the old date is in comment )
+
+
+
+### General
 
 
 
 1\. Explain for business benefits (step 2) by comments in app.phy file
-
-
 
